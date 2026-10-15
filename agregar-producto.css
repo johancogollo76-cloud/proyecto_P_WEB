@@ -1,0 +1,31 @@
+:root {
+  --bg-dark: #0d0e10; --bg-sidebar: #131417; --bg-card: #18191d; --bg-input: #212328;
+  --border-color: #2a2c33; --text-main: #f0f1f5; --text-muted: #8a8f9d;
+  --primary-orange: #ff5522;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg-dark); color: var(--text-main); font-family: system-ui, sans-serif; font-size: 14px; }
+.app-layout { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px 15px; display: flex; flex-direction: column; position: fixed; height: 100vh; }
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
+.brand-badge { background: var(--primary-orange); color: #fff; padding: 6px 10px; border-radius: 6px; font-weight: bold; }
+.nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.nav-item { color: var(--text-muted); padding: 10px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 12px; }
+.nav-item.active { background: rgba(255,85,34,0.15); color: var(--primary-orange); }
+.user-profile { display: flex; align-items: center; gap: 12px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+.avatar { background: #333; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.main-content { margin-left: 240px; flex: 1; padding: 30px; }
+.breadcrumb { font-size: 11px; color: var(--primary-orange); font-weight: bold; margin-bottom: 8px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.link { color: var(--primary-orange); text-decoration: none; font-size: 12px; }
+.product-form-layout { display: grid; grid-template-columns: 200px 1fr; gap: 25px; background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
+.upload-box { border: 2px dashed var(--border-color); border-radius: 8px; height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); }
+.form-fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full-width { grid-column: span 2; }
+.form-group label { font-size: 12px; color: var(--text-muted); }
+.form-control { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; color: var(--text-main); }
+.btn { padding: 10px 18px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; }
+.btn-primary { background: var(--primary-orange); color: #fff; }
+.btn-secondary { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); }
+.form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 15px; grid-column: span 2; }
