@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Motoworks</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-badge">MW</span>
+                <div class="brand-title">
+                    <h2>MOTOWORKS</h2>
+                    <small>GARAGE + PARTS</small>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item active"><i data-lucide="layout-dashboard"></i> Inicio</a>
+                <a href="inventario.html" class="nav-item"><i data-lucide="package"></i> Inventario</a>
+                <a href="ventas.html" class="nav-item"><i data-lucide="shopping-cart"></i> Ventas</a>
+                <a href="#" class="nav-item"><i data-lucide="receipt"></i> Gastos</a>
+                <a href="usuarios.html" class="nav-item"><i data-lucide="users"></i> Usuarios</a>
+                <a href="#" class="nav-item"><i data-lucide="settings"></i> Configuración</a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">CM</div>
+                <div class="user-info">
+                    <strong>Carlos Méndez</strong>
+                    <small>Administrador</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <span class="date-badge">VIERNES, 02 DE OCTUBRE</span>
+                    <h1>Panel de control</h1>
+                </div>
+                <span class="status-online"><span class="dot"></span> Operación en línea</span>
+            </header>
+
+            <div class="kpi-grid">
+                <div class="kpi-card"><span class="kpi-title">PRODUCTOS REGISTRADOS</span>
+                    <div class="kpi-value">246</div><span class="kpi-sub text-success">+12 este mes</span>
+                </div>
+                <div class="kpi-card"><span class="kpi-title">PRODUCTOS ACTIVOS</span>
+                    <div class="kpi-value">219</div><span class="kpi-sub text-primary">89% del inventario</span>
+                </div>
+                <div class="kpi-card"><span class="kpi-title">INACTIVOS</span>
+                    <div class="kpi-value">27</div><span class="kpi-sub text-warning">11% del inventario</span>
+                </div>
+                <div class="kpi-card"><span class="kpi-title">VENTAS HOY</span>
+                    <div class="kpi-value">$2,84 M</div><span class="kpi-sub">14 facturas</span>
+                </div>
+                <div class="kpi-card"><span class="kpi-title">VENTAS DEL MES</span>
+                    <div class="kpi-value">$38,6 M</div><span class="kpi-sub text-success">+12.4% vs. anterior</span>
+                </div>
+                <div class="kpi-card"><span class="kpi-title">GASTOS DEL MES</span>
+                    <div class="kpi-value">$8,9 M</div><span class="kpi-sub">22 registros</span>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <a href="agregar-producto.html" class="btn btn-primary"><i data-lucide="plus"></i> Agregar producto</a>
+                <a href="ventas.html" class="btn btn-secondary"><i data-lucide="shopping-bag"></i> Registrar venta</a>
+                <a href="#" class="btn btn-secondary"><i data-lucide="file-text"></i> Registrar gasto</a>
+                <a href="inventario.html" class="btn btn-outline"><i data-lucide="eye"></i> Ver inventario</a>
+            </div>
+
+            <div class="dashboard-tables">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Últimas ventas</h3>
+                        <a href="ventas.html" class="link">Ver todo</a>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-item">
+                            <div><strong>FV-2048 - Lucas Gómez</strong><small>Hoy, 10:42 - Débito</small></div>
+                            <strong>$145.400</strong>
+                        </div>
+                        <div class="list-item">
+                            <div><strong>FV-2047 - Taller Rápido</strong><small>Hoy, 09:15 - Efectivo</small></div>
+                            <strong>$274.900</strong>
+                        </div>
+                        <div class="list-item">
+                            <div><strong>FV-2046 - Diego Ruiz</strong><small>Ayer, 17:34 - PSE</small></div>
+                            <strong>$1.120.000</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Productos con poco stock</h3>
+                        <a href="inventario.html" class="link">Ver todo</a>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-item">
+                            <div><strong>Pastillas Brembo SA</strong><small>3 ud.</small></div><span
+                                class="badge badge-warning">3 ud.</span>
+                        </div>
+                        <div class="list-item">
+                            <div><strong>Llantería Michelin Road 6</strong><small>2 ud.</small></div><span
+                                class="badge badge-warning">2 ud.</span>
+                        </div>
+                        <div class="list-item">
+                            <div><strong>Batería Yuasa YTX9</strong><small>1 ud.</small></div><span
+                                class="badge badge-danger">1 ud.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
