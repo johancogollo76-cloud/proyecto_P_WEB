@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario - Motoworks</title>
+  <link rel="stylesheet" href="inventario.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-badge">MW</span><div><h2>MOTOWORKS</h2><small>GARAGE + PARTS</small></div></div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Inicio</a>
+        <a href="inventario.html" class="nav-item active"><i data-lucide="package"></i> Inventario</a>
+        <a href="ventas.html" class="nav-item"><i data-lucide="shopping-cart"></i> Ventas</a>
+        <a href="#" class="nav-item"><i data-lucide="receipt"></i> Gastos</a>
+        <a href="usuarios.html" class="nav-item"><i data-lucide="users"></i> Usuarios</a>
+        <a href="#" class="nav-item"><i data-lucide="settings"></i> Configuración</a>
+      </nav>
+      <div class="user-profile"><div class="avatar">CM</div><div><strong>Carlos Méndez</strong><small>Administrador</small></div></div>
+    </aside>
+
+    <main class="main-content">
+      <div class="breadcrumb">INICIO / INVENTARIO</div>
+      <header class="page-header">
+        <h1>Inventario</h1>
+        <a href="agregar-producto.html" class="btn btn-primary"><i data-lucide="plus"></i> Agregar producto</a>
+      </header>
+
+      <div class="filter-bar">
+        <input type="text" class="form-control" placeholder="Buscar por nombre, SKU..." />
+        <select class="form-control"><option>Todas las categorías</option></select>
+        <select class="form-control"><option>Estado</option></select>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>PRODUCTO</th>
+              <th>CATEGORÍA / MARCA</th>
+              <th>PRECIO</th>
+              <th>CANTIDAD</th>
+              <th>ESTADO</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="product-cell">
+                <div class="thumb"></div>
+                <div><strong>Kit de arrastre DID 520</strong><br/><small>TRA-DID-520-VX3</small></div>
+              </td>
+              <td>Transmisión<br/><small>DID</small></td>
+              <td>$489.900</td>
+              <td>18</td>
+              <td><span class="badge badge-success">ACTIVO</span></td>
+              <td class="actions-cell">
+                <a href="detalle-producto.html" class="btn-icon"><i data-lucide="eye"></i></a>
+                <a href="agregar-producto.html" class="btn-icon"><i data-lucide="edit"></i></a>
+                <a href="modal-eliminar.html" class="btn-icon"><i data-lucide="trash-2"></i></a>
+              </td>
+            </tr>
+            <tr>
+              <td class="product-cell">
+                <div class="thumb"></div>
+                <div><strong>Pastillas Brembo SA</strong><br/><small>PAS-BREM-001</small></div>
+              </td>
+              <td>Frenos<br/><small>Brembo</small></td>
+              <td>$180.000</td>
+              <td>3</td>
+              <td><span class="badge badge-success">ACTIVO</span></td>
+              <td class="actions-cell">
+                <a href="detalle-producto.html" class="btn-icon"><i data-lucide="eye"></i></a>
+                <a href="agregar-producto.html" class="btn-icon"><i data-lucide="edit"></i></a>
+                <a href="modal-eliminar.html" class="btn-icon"><i data-lucide="trash-2"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
