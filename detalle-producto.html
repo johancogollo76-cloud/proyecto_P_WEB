@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto - Motoworks</title>
+    <link rel="stylesheet" href="detalle-producto.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand"><span class="brand-badge">MW</span>
+                <div>
+                    <h2>MOTOWORKS</h2><small>GARAGE + PARTS</small>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Inicio</a>
+                <a href="inventario.html" class="nav-item active"><i data-lucide="package"></i> Inventario</a>
+                <a href="ventas.html" class="nav-item"><i data-lucide="shopping-cart"></i> Ventas</a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">CM</div>
+                <div><strong>Carlos Méndez</strong><small>Administrador</small></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">INVENTARIO / DETALLE</div>
+            <header class="page-header">
+                <div>
+                    <h1>Kit de arrastre DID 520 VX3</h1>
+                    <div class="badge-row">
+                        <span class="badge badge-success">ACTIVO</span>
+                        <span class="badge badge-info">STOCK SALUDABLE</span>
+                    </div>
+                </div>
+                <a href="agregar-producto.html" class="btn btn-primary">Editar producto</a>
+            </header>
+
+            <div class="product-detail-card">
+                <div class="detail-image-container">
+                    <div class="detail-img-placeholder">IMAGEN DE PRODUCTO</div>
+                </div>
+                <div class="detail-info">
+                    <p class="description-text">Kit premium reforzado para conducción urbana y touring. Incluye cadena
+                        X-Ring, piñón delantero de 16 dientes y corona trasera de 43 dientes.</p>
+                    <div class="info-grid">
+                        <div><small>CÓDIGO</small><br /><strong>TRA-DID-520-VX3</strong></div>
+                        <div><small>MARCA</small><br /><strong>DID</strong></div>
+                        <div><small>COMPATIBLE</small><br /><strong>Yamaha MT-07 - XSR700</strong></div>
+                        <div><small>CATEGORÍA</small><br /><strong>Transmisión</strong></div>
+                        <div><small>PRECIO COMPRA</small><br /><strong>$342.000</strong></div>
+                        <div><small>PRECIO VENTA</small><br /><strong>$489.900</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-20">
+                <h3>Historial de movimientos de inventario</h3>
+                <div class="list-group mt-10">
+                    <div class="list-item">
+                        <div><strong>Entrada - Compra OC-1874</strong><small>15 sep. 2026 - Carlos Méndez</small></div>
+                        <span class="text-success">+12</span>
+                    </div>
+                    <div class="list-item">
+                        <div><strong>Salida - Venta FV-2031</strong><small>08 sep. 2026 - Laura Gómez</small></div>
+                        <span class="text-danger">-1</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
