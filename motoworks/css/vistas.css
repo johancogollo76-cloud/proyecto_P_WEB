@@ -1,0 +1,227 @@
+/* ==========================================================
+   vistas.css · Estructura general, pantallas y responsive
+   ----------------------------------------------------------
+   1. Estructura (menú lateral + contenido)
+   2. Encabezado de página
+   3. Inicio (dashboard)
+   4. Inventario (filtros y tabla)
+   5. Formulario de producto
+   6. Detalle de producto
+   7. Ventas y detalle de venta
+   8. Usuarios
+   9. Responsive: tableta (≤ 900px) y celular (≤ 700px)
+   ========================================================== */
+
+/* 1. ESTRUCTURA ------------------------------------------ */
+.app { display: flex; min-height: 100vh; }
+.contenido { flex: 1; min-width: 0; padding: 28px; }
+.vista { display: flex; flex-direction: column; gap: 22px; max-width: 1100px; }
+.velo { display: none; }
+.barra-movil { display: none; }
+
+.lateral {
+  position: sticky; top: 0; flex: none; width: 218px; height: 100vh;
+  display: flex; flex-direction: column; gap: 28px; padding: 24px 16px 20px;
+  border-right: 1px solid var(--borde);
+}
+.marca { display: flex; align-items: center; gap: 10px; }
+.marca-logo {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  background: var(--acento); color: var(--fondo); border-radius: var(--radio);
+  font-size: 16px; font-weight: 900; font-style: italic;
+}
+.marca strong { display: block; font-size: 18px; font-weight: 900; line-height: 22px; }
+.marca small { font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-2); }
+
+.menu { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.menu a {
+  display: flex; align-items: center; gap: 11px; height: 42px; padding: 0 12px;
+  border-radius: var(--radio); color: var(--texto-2); font-size: 12px;
+}
+.menu a:hover { background: var(--tarjeta); }
+.menu a.activo { background: var(--acento-suave); color: var(--texto); }
+.menu a.activo .ico { color: var(--acento); }
+.menu a.pendiente { opacity: .45; cursor: not-allowed; }
+
+.admin { display: flex; align-items: center; gap: 10px; padding-top: 16px; border-top: 1px solid var(--borde); }
+.admin strong { display: block; font-size: 12px; font-weight: 600; }
+.avatar {
+  display: grid; place-items: center; width: 34px; height: 34px; flex: none;
+  border-radius: 50%; background: var(--acento-suave); color: var(--acento);
+  font-size: 11px; font-weight: 800;
+}
+
+/* 2. ENCABEZADO DE PÁGINA -------------------------------- */
+.encabezado { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.encabezado h1 { font-size: 30px; line-height: 36px; font-weight: 800; letter-spacing: -.02em; }
+.migas { font-size: 11px; color: var(--texto-3); }
+
+/* 3. INICIO ---------------------------------------------- */
+.metricas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.metrica { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+.metrica header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.metrica header span { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--texto-2); }
+.metrica .ico { color: var(--icono, var(--acento)); }
+.metrica.ok { --icono: var(--ok); }
+.metrica.alerta { --icono: var(--alerta); }
+.metrica strong { font-size: 26px; font-weight: 400; line-height: 31px; }
+
+.acciones-rapidas { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.listas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lista { display: flex; flex-direction: column; gap: 14px; padding: 18px; }
+.lista-cabecera { display: flex; justify-content: space-between; align-items: center; }
+.lista-cabecera a { font-size: 11px; color: var(--acento); }
+.filas li {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--borde); font-size: 11px;
+}
+.filas li:last-child { border-bottom: 0; padding-bottom: 0; }
+.filas strong { display: block; font-size: 12px; font-weight: 600; }
+
+/* 4. INVENTARIO ------------------------------------------ */
+.filtros { display: flex; flex-wrap: wrap; gap: 10px; }
+.buscador {
+  flex: 1; min-width: 220px; display: flex; align-items: center; gap: 9px;
+  height: 44px; padding: 0 13px; color: var(--texto-3);
+  background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.buscador:focus-within { border-color: var(--acento); }
+.buscador input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; font-size: 12px; color: var(--texto); }
+.selector { padding: 0 0 0 16px; }
+.selector select { height: 42px; border: 0; outline: 0; background-color: transparent; font-size: 12px; }
+
+/* Tabla (inventario y detalle de venta) */
+.tabla-caja { overflow: hidden; }
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th {
+  padding: 11px 16px; background: var(--elevado); text-align: left;
+  font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-3);
+}
+.tabla td { padding: 14px 16px; border-top: 1px solid var(--borde); font-size: 12px; vertical-align: middle; }
+.producto { display: flex; align-items: center; gap: 12px; }
+.producto strong { display: block; font-size: 12px; font-weight: 600; }
+.miniatura {
+  display: grid; place-items: center; flex: none; width: 48px; height: 48px;
+  background: var(--elevado) center / cover no-repeat; border: 1px solid var(--borde); border-radius: var(--radio); color: var(--acento);
+}
+.miniatura.con-imagen .ico { display: none; }
+.bajo { color: var(--alerta); }
+.vacio { padding: 24px; text-align: center; color: var(--texto-2); }
+
+.acciones { display: flex; gap: 6px; }
+.acciones :is(a, button) { display: grid; place-items: center; width: 28px; height: 28px; color: var(--texto-3); }
+.acciones .ico { width: 18px; height: 18px; }
+.acciones .editar { color: var(--acento); }
+.acciones .alternar { color: var(--alerta); }
+.acciones .eliminar { color: var(--peligro); }
+.acciones :is(a, button):hover { opacity: .7; }
+
+/* 5. FORMULARIO DE PRODUCTO ------------------------------ */
+.formulario { display: flex; flex-direction: column; gap: 16px; }
+.producto-form { display: grid; grid-template-columns: 250px 1fr; gap: 16px; align-items: start; }
+.imagen-caja { display: flex; flex-direction: column; gap: 14px; padding: 14px; }
+.vista-previa {
+  display: grid; place-items: center; height: 180px; color: var(--texto-3);
+  background: var(--elevado) center / cover no-repeat; border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.vista-previa.con-imagen .ico { display: none; }
+.vista-previa .ico { width: 40px; height: 40px; }
+
+.campos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; padding: 18px; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: 1 / -1; }
+
+.categorias {
+  padding: 10px 14px; font-size: 11px; color: var(--texto-2);
+  background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.acciones-form { display: flex; justify-content: flex-end; gap: 10px; }
+
+/* 6. DETALLE DE PRODUCTO --------------------------------- */
+.resumen-producto { display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+.imagen-grande {
+  display: grid; place-items: center; min-height: 220px; color: var(--acento);
+  background: var(--elevado); border: 1px solid var(--borde); border-radius: var(--radio-tarjeta);
+}
+.imagen-grande .ico { width: 72px; height: 72px; stroke-width: 1.5; }
+.ficha { display: flex; flex-direction: column; gap: 14px; padding: 18px; }
+.estados { display: flex; flex-wrap: wrap; gap: 8px; }
+.ficha p { font-size: 12px; color: var(--texto-2); }
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px 10px; }
+.specs dt { font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-3); }
+.specs dd { margin: 4px 0 0; font-size: 13px; }
+
+/* 7. VENTAS Y DETALLE DE VENTA --------------------------- */
+.lista-ventas, .lista-usuarios { display: flex; flex-direction: column; gap: 10px; }
+.venta-cols, .venta {
+  display: grid; grid-template-columns: 1.1fr 1.6fr .9fr .9fr 1.2fr 90px; gap: 12px; align-items: center;
+}
+.venta-cols { padding: 0 14px; font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-3); }
+.venta { padding: 13px 14px; font-size: 12px; }
+.venta strong { display: block; font-weight: 600; }
+
+.resumen-venta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.resumen-venta .tarjeta { display: flex; flex-direction: column; gap: 4px; padding: 16px; }
+.resumen-venta h2 { font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-3); }
+.resumen-venta p { font-size: 13px; }
+.total { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid var(--borde); }
+.total strong { font-size: 20px; color: var(--acento); }
+
+/* 8. USUARIOS -------------------------------------------- */
+.usuario { display: grid; grid-template-columns: 2fr 1.3fr auto auto 1fr auto; gap: 14px; align-items: center; padding: 13px; }
+.usuario strong { display: block; font-size: 12px; font-weight: 600; }
+.usuario > span:not(.chip) { font-size: 11px; color: var(--texto-2); }
+
+/* 9. RESPONSIVE ------------------------------------------ */
+@media (max-width: 1100px) {
+  .metricas { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Tableta: el menú lateral se convierte en un panel que se abre con el botón ☰ */
+@media (max-width: 900px) {
+  .barra-movil {
+    position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; background: var(--fondo); border-bottom: 1px solid var(--borde);
+  }
+  .barra-movil button { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--borde); border-radius: var(--radio); }
+  .lateral {
+    position: fixed; z-index: 30; inset: 0 auto 0 0; background: var(--fondo);
+    transform: translateX(-100%); transition: transform .2s;
+  }
+  body.menu-abierto .lateral { transform: none; }
+  body.menu-abierto .velo { display: block; position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, .6); }
+  .app { flex-direction: column; }
+  .contenido { padding: 20px 16px; }
+
+  .listas, .producto-form, .resumen-producto { grid-template-columns: 1fr; }
+  .resumen-venta { grid-template-columns: 1fr 1fr; }
+  .venta-cols { display: none; }
+  .venta { grid-template-columns: 1fr 1fr; }
+  .usuario { grid-template-columns: 1fr 1fr; }
+}
+
+/* Celular: columnas simples y tablas convertidas en tarjetas */
+@media (max-width: 700px) {
+  .encabezado h1 { font-size: 24px; line-height: 30px; }
+  .metricas { grid-template-columns: repeat(2, 1fr); }
+  .campos { grid-template-columns: 1fr; }
+  .campos > * { grid-column: auto; }
+  .resumen-venta { grid-template-columns: 1fr; }
+  .acciones-form .btn, .acciones-rapidas .btn { flex: 1; }
+
+  .tabla thead { display: none; }
+  .tabla tr { display: block; padding: 12px 14px; border-top: 1px solid var(--borde); }
+  .tabla td { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 6px 0; border: 0; }
+  .tabla td[data-label]::before {
+    content: attr(data-label); font-size: 9px; font-weight: 800; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--texto-3);
+  }
+  .tabla td:first-child::before { content: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lateral { transition: none; }
+}

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MotoWorks · Panel de administración</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/vistas.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+<div class="velo" id="velo"></div>
+
+<div class="app">
+
+  <!-- ============ MENÚ LATERAL ============ -->
+  <aside class="lateral">
+    <a class="marca" href="#inicio">
+      <span class="marca-logo">MW</span>
+      <span><strong>MOTOWORKS</strong><small>Repuestos y taller</small></span>
+    </a>
+
+    <nav class="menu">
+      <a href="#inicio" data-seccion="inicio"><i data-icono="layout-dashboard"></i>Inicio</a>
+      <a href="#inventario" data-seccion="inventario"><i data-icono="package"></i>Inventario</a>
+      <a href="#ventas" data-seccion="ventas"><i data-icono="receipt-text"></i>Ventas</a>
+      <a class="pendiente" title="No incluida en esta entrega"><i data-icono="wallet-cards"></i>Pagos</a>
+      <a href="#usuarios" data-seccion="usuarios"><i data-icono="users"></i>Usuarios</a>
+      <a class="pendiente" title="No incluida en esta entrega"><i data-icono="settings"></i>Ajustes</a>
+    </nav>
+
+    <div class="admin">
+      <span class="avatar">CR</span>
+      <div><strong>Carlos Ruiz</strong><small>Administrador</small></div>
+    </div>
+  </aside>
+
+  <main class="contenido">
+
+    <header class="barra-movil">
+      <button type="button" id="btn-menu" aria-label="Abrir menú"><i data-icono="menu"></i></button>
+      <strong>MOTOWORKS</strong>
+    </header>
+
+    <!-- ============ 1. INICIO ============ -->
+    <section class="vista" id="inicio" data-seccion="inicio">
+      <div class="encabezado">
+        <div><h1>Dashboard</h1><p class="migas">Inicio / Resumen general</p></div>
+        <span class="chip ok">Sistema operativo</span>
+      </div>
+
+      <div class="metricas">
+        <article class="tarjeta metrica">
+          <header><span>Productos</span><i data-icono="package"></i></header>
+          <strong>248</strong><small>En catálogo</small>
+        </article>
+        <article class="tarjeta metrica ok">
+          <header><span>Activos</span><i data-icono="circle-check"></i></header>
+          <strong>231</strong><small>A la venta</small>
+        </article>
+        <article class="tarjeta metrica alerta">
+          <header><span>Inactivos</span><i data-icono="circle-pause"></i></header>
+          <strong>17</strong><small>Fuera de venta</small>
+        </article>
+        <article class="tarjeta metrica">
+          <header><span>Ventas hoy</span><i data-icono="shopping-cart"></i></header>
+          <strong>12</strong><small>Facturas emitidas</small>
+        </article>
+        <article class="tarjeta metrica">
+          <header><span>Ingresos</span><i data-icono="chart-no-axes-combined"></i></header>
+          <strong>$18,4 M</strong><small>Este mes</small>
+        </article>
+        <article class="tarjeta metrica ok">
+          <header><span>Inventario</span><i data-icono="wallet"></i></header>
+          <strong>$96,2 M</strong><small>Valor en bodega</small>
+        </article>
+      </div>
+
+      <div class="acciones-rapidas">
+        <a class="btn btn-primario" href="#producto-form" data-modo="nuevo"><i data-icono="plus"></i>Nuevo producto</a>
+        <a class="btn" href="#inventario"><i data-icono="scan-barcode"></i>Escanear código</a>
+        <a class="btn" href="#ventas"><i data-icono="receipt"></i>Nueva venta</a>
+        <a class="btn" href="#inventario"><i data-icono="boxes"></i>Ajustar stock</a>
+      </div>
+
+      <div class="listas">
+        <article class="tarjeta lista">
+          <div class="lista-cabecera"><h2>Stock bajo</h2><a href="#inventario">Ver inventario</a></div>
+          <ul class="filas">
+            <li><div><strong>Aceite Motul 7100 10W-40</strong><small>MW-LU-007 · Lubricantes</small></div><span class="bajo">3 uds</span></li>
+            <li><div><strong>Filtro de aire K&amp;N</strong><small>MW-FI-022 · Motor</small></div><span class="bajo">0 uds</span></li>
+            <li><div><strong>Bujía NGK Iridium CR9EIX</strong><small>MW-EL-031 · Eléctrico</small></div><span class="bajo">4 uds</span></li>
+          </ul>
+        </article>
+        <article class="tarjeta lista">
+          <div class="lista-cabecera"><h2>Ventas recientes</h2><a href="#ventas">Ver ventas</a></div>
+          <ul class="filas">
+            <li><div><strong>FAC-0001042</strong><small>Juan Pérez</small></div><span>$519.700</span></li>
+            <li><div><strong>FAC-0001041</strong><small>Taller Moto Express</small></div><span>$1.249.000</span></li>
+            <li><div><strong>FAC-0001040</strong><small>María Gómez</small></div><span>$64.900</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 2. INVENTARIO ============ -->
+    <section class="vista" id="inventario" data-seccion="inventario" hidden>
+      <div class="encabezado">
+        <div><h1>Inventario</h1><p class="migas">Inicio / Inventario</p></div>
+        <a class="btn btn-primario" href="#producto-form" data-modo="nuevo"><i data-icono="plus"></i>Agregar producto</a>
+      </div>
+
+      <p class="aviso-ok" id="aviso-producto" hidden><i data-icono="circle-check"></i>Producto guardado correctamente (por ahora los datos no se almacenan).</p>
+
+      <div class="filtros">
+        <label class="buscador">
+          <i data-icono="search"></i>
+          <input type="search" id="buscar" placeholder="Buscar por nombre, SKU o marca">
+        </label>
+        <label class="btn selector">
+          <i data-icono="sliders-horizontal"></i>
+          <select id="filtro-categoria" aria-label="Filtrar por categoría">
+            <option value="">Todas las categorías</option>
+            <option>Transmisión</option><option>Frenos</option><option>Lubricantes</option>
+            <option>Motor</option><option>Eléctrico</option>
+          </select>
+        </label>
+        <label class="btn selector">
+          <select id="filtro-estado" aria-label="Filtrar por estado">
+            <option value="">Estado</option><option>Activo</option><option>Inactivo</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="tarjeta tabla-caja">
+        <table class="tabla">
+          <thead>
+            <tr><th>Producto</th><th>Categoría</th><th>Marca</th><th>Precio</th><th>Stock</th><th>Estado</th><th><span class="sr-only">Acciones</span></th></tr>
+          </thead>
+          <tbody>
+            <tr data-item data-nombre="Kit de arrastre DID 520VX3" data-categoria="Transmisión">
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><div><strong>Kit de arrastre DID 520VX3</strong><small>MW-KA-001</small></div></div></td>
+              <td data-label="Categoría">Transmisión</td><td data-label="Marca">DID</td>
+              <td data-label="Precio">$389.900</td><td data-label="Stock">14</td>
+              <td data-label="Estado"><span class="chip estado ok">Activo</span></td>
+              <td><div class="acciones">
+                <a class="ver" href="#producto-detalle" aria-label="Ver detalle"><i data-icono="eye"></i></a>
+                <a class="editar" href="#producto-form" data-modo="editar" aria-label="Editar"><i data-icono="pencil"></i></a>
+                <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+                <button class="eliminar" type="button" data-eliminar aria-label="Eliminar"><i data-icono="trash-2"></i></button>
+              </div></td>
+            </tr>
+            <tr data-item data-nombre="Pastillas de freno delanteras Brembo" data-categoria="Frenos">
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><div><strong>Pastillas de freno delanteras Brembo</strong><small>MW-FR-014</small></div></div></td>
+              <td data-label="Categoría">Frenos</td><td data-label="Marca">Brembo</td>
+              <td data-label="Precio">$129.900</td><td data-label="Stock">32</td>
+              <td data-label="Estado"><span class="chip estado ok">Activo</span></td>
+              <td><div class="acciones">
+                <a class="ver" href="#producto-detalle" aria-label="Ver detalle"><i data-icono="eye"></i></a>
+                <a class="editar" href="#producto-form" data-modo="editar" aria-label="Editar"><i data-icono="pencil"></i></a>
+                <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+                <button class="eliminar" type="button" data-eliminar aria-label="Eliminar"><i data-icono="trash-2"></i></button>
+              </div></td>
+            </tr>
+            <tr data-item data-nombre="Aceite Motul 7100 10W-40 (1 L)" data-categoria="Lubricantes">
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><div><strong>Aceite Motul 7100 10W-40 (1 L)</strong><small>MW-LU-007</small></div></div></td>
+              <td data-label="Categoría">Lubricantes</td><td data-label="Marca">Motul</td>
+              <td data-label="Precio">$64.900</td><td data-label="Stock" class="bajo">3</td>
+              <td data-label="Estado"><span class="chip estado ok">Activo</span></td>
+              <td><div class="acciones">
+                <a class="ver" href="#producto-detalle" aria-label="Ver detalle"><i data-icono="eye"></i></a>
+                <a class="editar" href="#producto-form" data-modo="editar" aria-label="Editar"><i data-icono="pencil"></i></a>
+                <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+                <button class="eliminar" type="button" data-eliminar aria-label="Eliminar"><i data-icono="trash-2"></i></button>
+              </div></td>
+            </tr>
+            <tr data-item data-nombre="Filtro de aire K&amp;N" data-categoria="Motor">
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><div><strong>Filtro de aire K&amp;N</strong><small>MW-FI-022</small></div></div></td>
+              <td data-label="Categoría">Motor</td><td data-label="Marca">K&amp;N</td>
+              <td data-label="Precio">$219.900</td><td data-label="Stock" class="bajo">0</td>
+              <td data-label="Estado"><span class="chip estado">Inactivo</span></td>
+              <td><div class="acciones">
+                <a class="ver" href="#producto-detalle" aria-label="Ver detalle"><i data-icono="eye"></i></a>
+                <a class="editar" href="#producto-form" data-modo="editar" aria-label="Editar"><i data-icono="pencil"></i></a>
+                <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+                <button class="eliminar" type="button" data-eliminar aria-label="Eliminar"><i data-icono="trash-2"></i></button>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="vacio" id="sin-resultados" hidden>No hay productos que coincidan. Cambia la búsqueda o los filtros.</p>
+      </div>
+    </section>
+
+    <!-- ============ 3. AGREGAR / EDITAR PRODUCTO ============ -->
+    <section class="vista" id="producto-form" data-seccion="inventario" hidden>
+      <div class="encabezado">
+        <div><h1 id="titulo-form">Agregar producto</h1><p class="migas">Inventario / <span id="miga-form">Nuevo producto</span></p></div>
+      </div>
+
+      <form class="formulario" id="form-producto" data-validar data-exito="aviso-producto" data-destino="inventario" novalidate>
+        <div class="resumen-errores" hidden><i data-icono="triangle-alert"></i><span></span></div>
+
+        <div class="producto-form">
+          <div class="tarjeta imagen-caja">
+            <div class="vista-previa" id="vista-previa"><i data-icono="package"></i></div>
+            <input type="file" id="archivo-imagen" accept="image/*" hidden>
+            <button class="btn" type="button" id="btn-imagen"><i data-icono="upload"></i>Subir imagen</button>
+          </div>
+
+          <div class="tarjeta campos">
+            <div class="campo col-4">
+              <label for="nombre">Nombre del producto</label>
+              <input id="nombre" name="nombre" required minlength="3" placeholder="Ej. Kit de arrastre DID 520VX3">
+            </div>
+            <div class="campo col-2">
+              <label for="sku">SKU</label>
+              <input id="sku" name="sku" required pattern="[A-Z0-9\-]{4,20}" data-error="Usa mayúsculas, números y guiones (mínimo 4)." placeholder="MW-KA-001">
+            </div>
+            <div class="campo col-2">
+              <label for="categoria">Categoría</label>
+              <select id="categoria" name="categoria" required>
+                <option value="">Selecciona</option>
+                <option>Transmisión</option><option>Frenos</option><option>Lubricantes</option><option>Motor</option><option>Eléctrico</option><option>Accesorios</option>
+              </select>
+            </div>
+            <div class="campo col-2">
+              <label for="marca">Marca</label>
+              <select id="marca" name="marca" required>
+                <option value="">Selecciona</option>
+                <option>DID</option><option>Brembo</option><option>Motul</option><option>K&amp;N</option><option>NGK</option>
+              </select>
+            </div>
+            <div class="campo col-2">
+              <label for="proveedor">Proveedor</label>
+              <select id="proveedor" name="proveedor" required>
+                <option value="">Selecciona</option>
+                <option>Motopartes S.A.S.</option><option>Distribuciones Andina</option><option>Lubricantes del Norte</option>
+              </select>
+            </div>
+            <div class="campo col-2">
+              <label for="precio">Precio de venta</label>
+              <input id="precio" name="precio" type="number" required min="1" step="1" placeholder="0">
+            </div>
+            <div class="campo col-2">
+              <label for="costo">Costo</label>
+              <input id="costo" name="costo" type="number" required min="0" step="1" placeholder="0">
+            </div>
+            <div class="campo col-2">
+              <label for="stock">Stock actual</label>
+              <input id="stock" name="stock" type="number" required min="0" step="1" placeholder="0">
+            </div>
+            <div class="campo col-2">
+              <label for="minimo">Stock mínimo</label>
+              <input id="minimo" name="minimo" type="number" required min="0" step="1" placeholder="0">
+            </div>
+            <div class="campo col-2">
+              <label for="estado">Estado</label>
+              <select id="estado" name="estado" required>
+                <option value="">Selecciona</option><option>Activo</option><option>Inactivo</option>
+              </select>
+            </div>
+            <div class="campo col-2">
+              <label for="modelo">Modelo compatible</label>
+              <input id="modelo" name="modelo" required placeholder="Ej. Yamaha MT-03">
+            </div>
+            <div class="campo col-6">
+              <label for="descripcion">Descripción</label>
+              <textarea id="descripcion" name="descripcion" placeholder="Detalles del producto (opcional)"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <p class="categorias"><strong>Categorías disponibles:</strong> Transmisión, Frenos, Lubricantes, Motor, Eléctrico, Accesorios</p>
+
+        <div class="acciones-form">
+          <a class="btn" href="#inventario">Cancelar</a>
+          <button class="btn btn-primario" type="submit"><i data-icono="save"></i>Guardar producto</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ 4. DETALLE DE PRODUCTO ============ -->
+    <section class="vista" id="producto-detalle" data-seccion="inventario" hidden>
+      <div class="encabezado">
+        <div><h1>Kit de arrastre DID 520VX3</h1><p class="migas">Inventario / Detalle de producto</p></div>
+        <a class="btn" href="#producto-form" data-modo="editar" data-sku="MW-KA-001"><i data-icono="pencil"></i>Editar</a>
+      </div>
+
+      <div class="resumen-producto">
+        <div class="imagen-grande"><i data-icono="package"></i></div>
+        <div class="tarjeta ficha">
+          <div class="estados"><span class="chip ok">Activo</span><span class="chip">Transmisión</span></div>
+          <p>Kit de arrastre con cadena DID 520VX3 de alta resistencia, piñón y corona en acero. Incluye eslabón de unión. Pensado para motos de 250 a 500 cc.</p>
+          <dl class="specs">
+            <div><dt>SKU</dt><dd>MW-KA-001</dd></div>
+            <div><dt>Marca</dt><dd>DID</dd></div>
+            <div><dt>Compatibilidad</dt><dd>Yamaha MT-03 / R3</dd></div>
+            <div><dt>Precio de venta</dt><dd>$389.900</dd></div>
+            <div><dt>Costo</dt><dd>$298.000</dd></div>
+            <div><dt>Proveedor</dt><dd>Motopartes S.A.S.</dd></div>
+            <div><dt>Stock actual</dt><dd>14 uds</dd></div>
+            <div><dt>Stock mínimo</dt><dd>5 uds</dd></div>
+            <div><dt>Ubicación</dt><dd>Bodega A · Estante 3</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <article class="tarjeta lista">
+        <div class="lista-cabecera"><h2>Movimientos recientes</h2><a href="#inventario">Volver al inventario</a></div>
+        <ul class="filas">
+          <li><div><strong>Entrada de stock</strong><small>Compra a Motopartes S.A.S.</small></div><span>+10 · 10 oct 2026</span></li>
+          <li><div><strong>Venta FAC-0001042</strong><small>Juan Pérez</small></div><span>−1 · 15 oct 2026</span></li>
+          <li><div><strong>Ajuste de inventario</strong><small>Conteo físico</small></div><span>−1 · 12 oct 2026</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ============ 5. VENTAS ============ -->
+    <section class="vista" id="ventas" data-seccion="ventas" hidden>
+      <div class="encabezado">
+        <div><h1>Ventas</h1><p class="migas">Inicio / Ventas</p></div>
+        <a class="btn btn-primario" href="#ventas"><i data-icono="plus"></i>Nueva venta</a>
+      </div>
+
+      <div class="filtros">
+        <label class="buscador"><i data-icono="search"></i><input type="search" id="buscar-venta" placeholder="Buscar por factura o cliente"></label>
+      </div>
+
+      <div class="lista-ventas">
+        <div class="venta-cols"><span>Factura</span><span>Cliente</span><span>Total</span><span>Estado</span><span>Método de pago</span><span>Acción</span></div>
+
+        <article class="tarjeta venta">
+          <div><strong>FAC-0001042</strong><small>15 oct 2026</small></div>
+          <div><strong>Juan Pérez</strong><small>2 productos</small></div>
+          <span>$519.700</span><span><span class="chip ok">Pagada</span></span><span>Tarjeta</span>
+          <a class="btn" href="#venta-detalle" aria-label="Ver factura FAC-0001042"><i data-icono="arrow-right"></i>Ver</a>
+        </article>
+        <article class="tarjeta venta">
+          <div><strong>FAC-0001041</strong><small>15 oct 2026</small></div>
+          <div><strong>Taller Moto Express</strong><small>5 productos</small></div>
+          <span>$1.249.000</span><span><span class="chip alerta">Pendiente</span></span><span>Transferencia</span>
+          <a class="btn" href="#venta-detalle" aria-label="Ver factura FAC-0001041"><i data-icono="arrow-right"></i>Ver</a>
+        </article>
+        <article class="tarjeta venta">
+          <div><strong>FAC-0001040</strong><small>14 oct 2026</small></div>
+          <div><strong>María Gómez</strong><small>1 producto</small></div>
+          <span>$64.900</span><span><span class="chip ok">Pagada</span></span><span>Efectivo</span>
+          <a class="btn" href="#venta-detalle" aria-label="Ver factura FAC-0001040"><i data-icono="arrow-right"></i>Ver</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 6. DETALLE DE VENTA ============ -->
+    <section class="vista" id="venta-detalle" data-seccion="ventas" hidden>
+      <div class="encabezado">
+        <div><h1>Factura FAC-0001042</h1><p class="migas">Ventas / Detalle de venta</p></div>
+        <span class="chip ok">Pagada</span>
+      </div>
+
+      <div class="resumen-venta">
+        <article class="tarjeta"><h2>Cliente</h2><p>Juan Pérez</p><small>juan.perez@correo.com · 300 555 1234</small></article>
+        <article class="tarjeta"><h2>Fecha</h2><p>15 oct 2026</p><small>10:42 a. m.</small></article>
+        <article class="tarjeta"><h2>Método de pago</h2><p>Tarjeta</p><small>Débito terminada en 4417</small></article>
+      </div>
+
+      <div class="tarjeta tabla-caja">
+        <table class="tabla">
+          <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unitario</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><strong>Kit de arrastre DID 520VX3</strong></div></td>
+              <td data-label="Cantidad">1</td><td data-label="Precio unitario">$389.900</td><td data-label="Subtotal">$389.900</td>
+            </tr>
+            <tr>
+              <td><div class="producto"><span class="miniatura"><i data-icono="package"></i></span><strong>Aceite Motul 7100 10W-40 (1 L)</strong></div></td>
+              <td data-label="Cantidad">2</td><td data-label="Precio unitario">$64.900</td><td data-label="Subtotal">$129.800</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="total"><span>Total</span><strong>$519.700</strong></div>
+      </div>
+
+      <div class="acciones-form"><a class="btn" href="#ventas">Volver a ventas</a></div>
+    </section>
+
+    <!-- ============ 7. USUARIOS ============ -->
+    <section class="vista" id="usuarios" data-seccion="usuarios" hidden>
+      <div class="encabezado">
+        <div><h1>Usuarios</h1><p class="migas">Inicio / Usuarios</p></div>
+        <button class="btn btn-primario" type="button" data-abrir="dlg-usuario"><i data-icono="user-plus"></i>Nuevo usuario</button>
+      </div>
+
+      <p class="aviso-ok" id="aviso-usuario" hidden><i data-icono="circle-check"></i>Usuario creado correctamente (por ahora los datos no se almacenan).</p>
+
+      <div class="lista-usuarios">
+        <article class="tarjeta usuario" data-item>
+          <div><strong>Carlos Ruiz</strong><small>carlos.ruiz@motoworks.co</small></div>
+          <span class="telefono">300 123 4567</span><span class="chip">Administrador</span><span class="chip estado ok">Activo</span>
+          <span class="registro">Registrado 12 ene 2026</span>
+          <div class="acciones">
+            <button class="editar" type="button" data-abrir="dlg-usuario" aria-label="Editar usuario"><i data-icono="pencil"></i></button>
+            <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+          </div>
+        </article>
+        <article class="tarjeta usuario" data-item>
+          <div><strong>Laura Méndez</strong><small>laura.mendez@motoworks.co</small></div>
+          <span class="telefono">311 456 7890</span><span class="chip">Vendedor</span><span class="chip estado ok">Activo</span>
+          <span class="registro">Registrado 03 mar 2026</span>
+          <div class="acciones">
+            <button class="editar" type="button" data-abrir="dlg-usuario" aria-label="Editar usuario"><i data-icono="pencil"></i></button>
+            <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+          </div>
+        </article>
+        <article class="tarjeta usuario" data-item>
+          <div><strong>Andrés Torres</strong><small>andres.torres@motoworks.co</small></div>
+          <span class="telefono">320 987 6543</span><span class="chip">Bodega</span><span class="chip estado">Inactivo</span>
+          <span class="registro">Registrado 21 jun 2026</span>
+          <div class="acciones">
+            <button class="editar" type="button" data-abrir="dlg-usuario" aria-label="Editar usuario"><i data-icono="pencil"></i></button>
+            <button class="alternar" type="button" data-alternar aria-label="Activar o desactivar"><i data-icono="power"></i></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ DIÁLOGO: CONFIRMAR ELIMINACIÓN ============ -->
+<dialog id="dlg-eliminar" class="peligro">
+  <div class="dialogo-cuerpo">
+    <span class="icono-peligro"><i data-icono="trash-2"></i></span>
+    <div>
+      <h2>¿Eliminar este producto?</h2>
+      <p id="nombre-eliminar"></p>
+      <p class="advertencia">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="dialogo-acciones">
+      <button class="btn" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn-peligro" type="button" id="confirmar-eliminar"><i data-icono="trash-2"></i>Eliminar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ============ DIÁLOGO: NUEVO USUARIO (formulario) ============ -->
+<dialog id="dlg-usuario">
+  <form class="dialogo-cuerpo" id="form-usuario" data-validar data-exito="aviso-usuario" novalidate>
+    <h2 id="titulo-usuario">Nuevo usuario</h2>
+    <div class="resumen-errores" hidden><i data-icono="triangle-alert"></i><span></span></div>
+
+    <div class="campo">
+      <label for="u-nombre">Nombre completo</label>
+      <input id="u-nombre" name="nombre" required minlength="3" placeholder="Ej. Laura Méndez">
+    </div>
+    <div class="campo">
+      <label for="u-correo">Correo electrónico</label>
+      <input id="u-correo" name="correo" type="email" required placeholder="nombre@motoworks.co">
+    </div>
+    <div class="campo">
+      <label for="u-telefono">Teléfono</label>
+      <input id="u-telefono" name="telefono" inputmode="numeric" required pattern="[0-9]{10}" data-error="Escribe 10 dígitos, sin espacios." placeholder="3001234567">
+    </div>
+    <div class="campo">
+      <label for="u-rol">Rol</label>
+      <select id="u-rol" name="rol" required>
+        <option value="">Selecciona</option><option>Administrador</option><option>Vendedor</option><option>Bodega</option>
+      </select>
+    </div>
+
+    <div class="dialogo-acciones">
+      <button class="btn" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn-primario" type="submit">Guardar usuario</button>
+    </div>
+  </form>
+</dialog>
+
+</body>
+</html>
