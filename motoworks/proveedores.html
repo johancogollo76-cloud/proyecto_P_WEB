@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/vistas.css">
   <script src="js/comun.js" defer></script>
+  <script src="js/almacenamiento.js" defer></script>
   <script src="js/datos.js" defer></script>
   <script src="js/catalogo.js" defer></script>
 </head>
@@ -25,6 +26,10 @@
 
       <p class="aviso-ok" id="aviso-catalogo" hidden><svg class="ico"><use href="#circle-check"></use></svg><span></span></p>
       <p class="resumen-errores" id="aviso-error" hidden><svg class="ico"><use href="#triangle-alert"></use></svg><span></span></p>
+
+      <div class="filtros">
+        <label class="buscador"><svg class="ico"><use href="#search"></use></svg><input type="search" id="buscar-catalogo" placeholder="Buscar proveedor"></label>
+      </div>
 
       <div class="lista-usuarios" id="lista-catalogo"></div>
     </section>

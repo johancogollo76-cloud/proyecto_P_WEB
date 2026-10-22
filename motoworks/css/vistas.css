@@ -565,7 +565,7 @@
 .venta-cols,
 .venta {
   display: grid;
-  grid-template-columns: 1.1fr 1.6fr .9fr .9fr 1.2fr 90px;
+  grid-template-columns: 1.1fr 1.6fr .9fr .9fr 1.2fr 110px;
   gap: 12px;
   align-items: center;
 }

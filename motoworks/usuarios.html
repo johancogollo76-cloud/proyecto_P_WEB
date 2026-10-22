@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/vistas.css">
   <script src="js/comun.js" defer></script>
+  <script src="js/almacenamiento.js" defer></script>
   <script src="js/datos.js" defer></script>
   <script src="js/usuarios.js" defer></script>
 </head>
@@ -23,7 +24,11 @@
         <button class="btn btn-primario" type="button" id="nuevo-usuario"><svg class="ico"><use href="#user-plus"></use></svg>Nuevo usuario</button>
       </div>
 
-      <p class="aviso-ok" id="aviso-usuario" hidden><svg class="ico"><use href="#circle-check"></use></svg>Usuario guardado correctamente (solo se mantiene mientras la pestaña esté abierta).</p>
+      <p class="aviso-ok" id="aviso-usuario" hidden><svg class="ico"><use href="#circle-check"></use></svg><span>Usuario guardado correctamente.</span></p>
+
+      <div class="filtros">
+        <label class="buscador"><svg class="ico"><use href="#search"></use></svg><input type="search" id="buscar-usuario" placeholder="Buscar por nombre, correo o rol"></label>
+      </div>
 
       <div class="lista-usuarios" id="lista-usuarios"></div>
     </section>
@@ -59,6 +64,21 @@
       <button class="btn btn-primario" type="submit">Guardar usuario</button>
     </div>
   </form>
+</dialog>
+
+<dialog id="dlg-eliminar" class="peligro">
+  <div class="dialogo-cuerpo">
+    <span class="icono-peligro"><svg class="ico"><use href="#trash-2"></use></svg></span>
+    <div>
+      <h2>¿Eliminar este usuario?</h2>
+      <p id="nombre-eliminar"></p>
+      <p class="advertencia">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="dialogo-acciones">
+      <button class="btn" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn-peligro" type="button" id="confirmar-eliminar"><svg class="ico"><use href="#trash-2"></use></svg>Eliminar</button>
+    </div>
+  </div>
 </dialog>
 
 <!-- CATÁLOGO DE ICONOS: dibujos SVG en HTML normal (sin JavaScript).

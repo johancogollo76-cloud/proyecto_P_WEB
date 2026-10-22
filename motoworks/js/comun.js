@@ -6,6 +6,7 @@
    3. Menú lateral (se dibuja aquí para no repetirlo en cada HTML)
    4. Diálogos (ventanas emergentes)
    5. Validación de formularios
+   6. Confirmar eliminación
    ========================================================== */
 
 /* 1. UTILIDADES ------------------------------------------- */
@@ -17,6 +18,17 @@ const esc = texto => String(texto).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<'
 // $7,4 M  (para los contadores del dashboard)
 const dineroCorto = n => n >= 1000000 ? '$' + (n / 1000000).toFixed(1).replace('.', ',') + ' M' : dinero(n);
 const dinero = n => '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+// Escribe un texto dentro del elemento con ese id
+const poner = (id, texto) => { $('#' + id).textContent = texto; };
+
+// Buscador: ¿alguno de los textos contiene lo que se escribió? (sin importar mayúsculas)
+const coincideConBusqueda = (textoBuscado, ...textos) =>
+  textos.join(' ').toLowerCase().includes(textoBuscado.trim().toLowerCase());
+
+// Fecha y hora de este momento, con el formato de la app: "15 oct 2026" y "10:42 a. m."
+const fechaDeHoy = () => new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
+const horaActual = () => new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 
 // Aviso verde de "guardado": la página anterior lo pide con ?aviso=algo en la dirección
 function avisoPendiente() {
@@ -93,6 +105,10 @@ function activarDialogos() {
     const boton = e.target.closest('[data-cerrar]');
     if (boton) boton.closest('dialog').close();
   });
+  $('#confirmar-eliminar')?.addEventListener('click', () => {
+    $('#dlg-eliminar').close();
+    accionConfirmada();
+  });
 }
 
 /* 5. VALIDACIÓN DE FORMULARIOS -------------------------------
@@ -160,6 +176,19 @@ function activarValidacion(form, alValidar) {
     $$('[aria-invalid]', form).forEach(c => marcarCampo(c, ''));
     resumen.hidden = true;
   });
+}
+
+/* 6. CONFIRMAR ELIMINACIÓN -----------------------------------
+   Todas las páginas con botón "Eliminar" usan esta función: abre el
+   diálogo "¿Eliminar?" y SOLO si la persona confirma ejecuta lo que
+   se le pase.
+   Uso:  confirmarEliminacion(producto.nombre, () => { ...eliminar... }) */
+let accionConfirmada = null;
+
+function confirmarEliminacion(nombre, alConfirmar) {
+  accionConfirmada = alConfirmar;
+  $('#nombre-eliminar').textContent = nombre;
+  $('#dlg-eliminar').showModal();
 }
 
 /* INICIO ---------------------------------------------------- */

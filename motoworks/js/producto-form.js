@@ -2,8 +2,8 @@
    producto-form.js · Agregar y editar producto
    Sin ?id= en la dirección se crea uno nuevo; con ?id=p1 se edita ese.
    ========================================================== */
-const productos = leerDatos('productos');
-const producto = productos.find(p => p.id === new URLSearchParams(location.search).get('id')) || null;
+const idProducto = new URLSearchParams(location.search).get('id');
+const producto = buscarRegistro('productos', idProducto) || null;
 const form = $('#form-producto');
 let imagen = producto?.imagen || '';
 
@@ -15,7 +15,7 @@ function llenarListas() {
     const lista = $('#' + campo);
     const elegido = lista.value;
     lista.innerHTML = '<option value="">Selecciona</option>' +
-      leerDatos(tabla).map(i => `<option>${esc(i.nombre)}</option>`).join('');
+      listarRegistros(tabla).map(item => `<option>${esc(item.nombre)}</option>`).join('');
     lista.value = elegido;   // conserva lo que ya estaba elegido
   });
 }
@@ -41,8 +41,7 @@ $$('.enlace-nuevo').forEach(boton => boton.addEventListener('click', () => {
 }));
 
 function verificarNombreNuevo() {
-  const nombre = $('#nuevo-nombre').value.trim().toLowerCase();
-  const repetido = leerDatos(destino.tabla).some(i => i.nombre.toLowerCase() === nombre);
+  const repetido = existeValor(destino.tabla, 'nombre', $('#nuevo-nombre').value);
   $('#nuevo-nombre').setCustomValidity(repetido ? 'Ya existe uno con ese nombre.' : '');
 }
 $('#nuevo-nombre').addEventListener('input', verificarNombreNuevo);
@@ -50,16 +49,14 @@ formNuevo.addEventListener('submit', verificarNombreNuevo);   // debe ir antes d
 
 activarValidacion(formNuevo, () => {
   const nombre = $('#nuevo-nombre').value.trim();
-  const lista = leerDatos(destino.tabla);
-  lista.unshift({ id: destino.tabla[0] + Date.now(), nombre, extra: '' });
-  guardarDatos(destino.tabla, lista);
+  crearRegistro(destino.tabla, { nombre, extra: '' });
 
   llenarListas();
   $('#' + destino.campo).value = nombre;   // queda elegido en el formulario
   dialogoNuevo.close();
 });
 
-/* Imagen: se reduce para que quepa en la memoria temporal del navegador */
+/* Imagen: se reduce para que quepa en el almacenamiento del navegador */
 function mostrarVistaPrevia() {
   const caja = $('#vista-previa');
   caja.style.backgroundImage = imagen ? `url(${imagen})` : '';
@@ -87,7 +84,7 @@ mostrarVistaPrevia();
 /* El SKU no se puede repetir (se ignora el del producto que se edita) */
 function verificarSku() {
   const sku = $('#sku');
-  const repetido = productos.some(p => p.id !== producto?.id && p.sku === sku.value.trim());
+  const repetido = existeValor('productos', 'sku', sku.value, producto?.id);
   sku.setCustomValidity(repetido ? 'Ya existe un producto con este SKU.' : '');
 }
 $('#sku').addEventListener('input', verificarSku);
@@ -101,10 +98,9 @@ function guardarProducto() {
   datos.nombre = datos.nombre.trim();
   datos.sku = datos.sku.trim();
 
-  if (producto) Object.assign(producto, datos);
-  else productos.unshift({ id: 'p' + Date.now(), ubicacion: 'Sin asignar', ...datos });
+  if (producto) actualizarRegistro('productos', producto.id, datos);
+  else crearRegistro('productos', { ubicacion: 'Sin asignar', ...datos });
 
-  guardarDatos('productos', productos);
   location.href = 'inventario.html?aviso=producto';
 }
 

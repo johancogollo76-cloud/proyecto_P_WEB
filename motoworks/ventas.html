@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/vistas.css">
   <script src="js/comun.js" defer></script>
+  <script src="js/almacenamiento.js" defer></script>
   <script src="js/datos.js" defer></script>
   <script src="js/ventas.js" defer></script>
 </head>
@@ -20,8 +21,11 @@
     <section class="vista">
       <div class="encabezado">
         <div><h1>Ventas</h1><p class="migas">Inicio / Ventas</p></div>
-        <a class="btn btn-primario" href="ventas.html"><svg class="ico"><use href="#plus"></use></svg>Nueva venta</a>
+        <button class="btn btn-primario" type="button" id="nueva-venta"><svg class="ico"><use href="#plus"></use></svg>Nueva venta</button>
       </div>
+      <p class="aviso-ok" id="aviso-venta" hidden><svg class="ico"><use href="#circle-check"></use></svg><span></span></p>
+      <p class="resumen-errores" id="aviso-error" hidden><svg class="ico"><use href="#triangle-alert"></use></svg><span></span></p>
+
       <div class="filtros">
         <label class="buscador"><svg class="ico"><use href="#search"></use></svg><input type="search" id="buscar-venta" placeholder="Buscar por factura o cliente"></label>
       </div>
@@ -34,6 +38,64 @@
   </main>
 </div>
 
+
+<dialog id="dlg-venta">
+  <form class="dialogo-cuerpo" id="form-venta" novalidate>
+    <h2>Nueva venta</h2>
+    <div class="resumen-errores" hidden><svg class="ico"><use href="#triangle-alert"></use></svg><span></span></div>
+
+    <div class="campo">
+      <label for="v-cliente">Cliente</label>
+      <input id="v-cliente" name="cliente" required minlength="3" placeholder="Ej. Juan Pérez">
+    </div>
+    <div class="campo">
+      <label for="v-contacto">Contacto (opcional)</label>
+      <input id="v-contacto" name="contacto" placeholder="Correo o teléfono">
+    </div>
+    <div class="campo">
+      <label for="v-producto">Producto</label>
+      <select id="v-producto" name="productoId" required></select>
+    </div>
+    <div class="campo">
+      <label for="v-cantidad">Cantidad</label>
+      <input id="v-cantidad" name="cantidad" type="number" min="1" step="1" required placeholder="1">
+    </div>
+    <div class="campo">
+      <label for="v-metodo">Método de pago</label>
+      <select id="v-metodo" name="metodo" required>
+        <option value="">Selecciona</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="v-detalle">Detalle del pago (opcional)</label>
+      <input id="v-detalle" name="detallePago" placeholder="Ej. Pago en caja">
+    </div>
+    <div class="campo">
+      <label for="v-estado">Estado</label>
+      <select id="v-estado" name="estado" required><option>Pagada</option><option>Pendiente</option></select>
+    </div>
+
+    <div class="dialogo-acciones">
+      <button class="btn" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn-primario" type="submit">Registrar venta</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlg-eliminar" class="peligro">
+  <div class="dialogo-cuerpo">
+    <span class="icono-peligro"><svg class="ico"><use href="#trash-2"></use></svg></span>
+    <div>
+      <h2>¿Eliminar esta venta?</h2>
+      <p id="nombre-eliminar"></p>
+      <p class="advertencia">El stock vendido se devuelve al inventario. Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="dialogo-acciones">
+      <button class="btn" type="button" data-cerrar>Cancelar</button>
+      <button class="btn btn-peligro" type="button" id="confirmar-eliminar"><svg class="ico"><use href="#trash-2"></use></svg>Eliminar</button>
+    </div>
+  </div>
+</dialog>
 
 <!-- CATÁLOGO DE ICONOS: dibujos SVG en HTML normal (sin JavaScript).
      Para usar uno:  <svg class="ico"><use href="#nombre"></use></svg>   o en JS:  icono('nombre') -->

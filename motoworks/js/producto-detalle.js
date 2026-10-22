@@ -2,8 +2,8 @@
    producto-detalle.js · Ficha de un producto (?id=p1)
    Cada elemento con data-campo="..." se rellena con ese dato.
    ========================================================== */
-const productos = leerDatos('productos');
-const producto = productos.find(p => p.id === new URLSearchParams(location.search).get('id')) || productos[0];
+const idProducto = new URLSearchParams(location.search).get('id');
+const producto = buscarRegistro('productos', idProducto) || listarRegistros('productos')[0];
 
 if (!producto) {
   location.href = 'inventario.html';   // no hay productos que mostrar

@@ -8,21 +8,19 @@
      data-articulo="una marca"  → para los mensajes
    ========================================================== */
 const { tabla, campo, articulo } = document.body.dataset;
-const items = leerDatos(tabla);
-const productos = leerDatos('productos');
 const form = $('#form-catalogo');
+const dialogo = $('#dlg-catalogo');
 let editando = null;     // registro que se edita (null = se está creando uno nuevo)
-let idAEliminar = null;
 
 // Cuántos productos usan este registro
-const usos = item => productos.filter(p => p[campo] === item.nombre).length;
+const cantidadDeProductos = item => productosQueUsan(campo, item.nombre).length;
 
-function tarjetaHTML(i) {
-  const n = usos(i);
+function tarjetaHTML(item) {
+  const cantidad = cantidadDeProductos(item);
   return `
-    <article class="tarjeta item-catalogo" data-id="${i.id}">
-      <div><strong>${esc(i.nombre)}</strong><small>${esc(i.extra || 'Sin información adicional')}</small></div>
-      <span class="chip${n ? ' ok' : ''}">${n} ${n === 1 ? 'producto' : 'productos'}</span>
+    <article class="tarjeta item-catalogo" data-id="${item.id}">
+      <div><strong>${esc(item.nombre)}</strong><small>${esc(item.extra || 'Sin información adicional')}</small></div>
+      <span class="chip${cantidad ? ' ok' : ''}">${cantidad} ${cantidad === 1 ? 'producto' : 'productos'}</span>
       <div class="acciones">
         <button class="editar" type="button" data-accion="editar" aria-label="Editar">${icono('pencil')}</button>
         <button class="eliminar" type="button" data-accion="eliminar" aria-label="Eliminar">${icono('trash-2')}</button>
@@ -30,13 +28,19 @@ function tarjetaHTML(i) {
     </article>`;
 }
 
+// Dibuja la lista; el buscador filtra por nombre o descripción
 function dibujar() {
-  $('#lista-catalogo').innerHTML = items.map(tarjetaHTML).join('')
-    || '<p class="vacio">Aún no hay registros. Crea el primero con el botón de arriba.</p>';
+  const items = listarRegistros(tabla);
+  const texto = $('#buscar-catalogo').value;
+  const visibles = items.filter(item => coincideConBusqueda(texto, item.nombre, item.extra || ''));
+  $('#lista-catalogo').innerHTML = visibles.map(tarjetaHTML).join('')
+    || `<p class="vacio">${items.length === 0
+      ? 'Aún no hay registros. Crea el primero con el botón de arriba.'
+      : 'No hay registros que coincidan con la búsqueda.'}</p>`;
 }
+$('#buscar-catalogo').addEventListener('input', dibujar);
 
 /* Abrir la ventana: vacía (nuevo) o con los datos del registro (editar) */
-const dialogo = $('#dlg-catalogo');
 function abrirDialogo(item) {
   editando = item;
   form.reset();
@@ -50,32 +54,25 @@ $('#nuevo-item').addEventListener('click', () => abrirDialogo(null));
 $('#lista-catalogo').addEventListener('click', e => {
   const boton = e.target.closest('[data-accion]');
   if (!boton) return;
-  const item = items.find(i => i.id === boton.closest('article').dataset.id);
+  const item = buscarRegistro(tabla, boton.closest('article').dataset.id);
 
   if (boton.dataset.accion === 'editar') {
     abrirDialogo(item);
-  } else if (usos(item) > 0) {
+  } else if (cantidadDeProductos(item) > 0) {
     // Regla: no se elimina algo que tiene productos
-    mostrarAviso('aviso-error', `No se puede eliminar «${item.nombre}»: lo usan ${usos(item)} producto(s). Cámbialos primero.`);
+    mostrarAviso('aviso-error', `No se puede eliminar «${item.nombre}»: lo usan ${cantidadDeProductos(item)} producto(s). Cámbialos primero.`);
   } else {
-    idAEliminar = item.id;
-    $('#nombre-eliminar').textContent = item.nombre;
-    $('#dlg-eliminar').showModal();   // pide confirmación
+    confirmarEliminacion(item.nombre, () => {
+      eliminarRegistro(tabla, item.id);
+      dibujar();
+      mostrarAviso('aviso-catalogo', 'Eliminado correctamente.');
+    });
   }
-});
-
-$('#confirmar-eliminar').addEventListener('click', () => {
-  items.splice(items.findIndex(i => i.id === idAEliminar), 1);
-  guardarDatos(tabla, items);
-  $('#dlg-eliminar').close();
-  dibujar();
-  mostrarAviso('aviso-catalogo', 'Eliminado correctamente.');
 });
 
 /* El nombre no se puede repetir */
 function verificarNombre() {
-  const nombre = $('#cat-nombre').value.trim().toLowerCase();
-  const repetido = items.some(i => i !== editando && i.nombre.toLowerCase() === nombre);
+  const repetido = existeValor(tabla, 'nombre', $('#cat-nombre').value, editando?.id);
   $('#cat-nombre').setCustomValidity(repetido ? `Ya existe ${articulo} con ese nombre.` : '');
 }
 $('#cat-nombre').addEventListener('input', verificarNombre);
@@ -88,14 +85,12 @@ function guardarItem() {
 
   if (editando) {
     // Si cambió el nombre, se actualiza también en los productos que lo usaban
-    productos.forEach(p => { if (p[campo] === editando.nombre) p[campo] = nombre; });
-    guardarDatos('productos', productos);
-    Object.assign(editando, { nombre, extra });
+    renombrarEnProductos(campo, editando.nombre, nombre);
+    actualizarRegistro(tabla, editando.id, { nombre, extra });
   } else {
-    items.unshift({ id: tabla[0] + Date.now(), nombre, extra });
+    crearRegistro(tabla, { nombre, extra });
   }
 
-  guardarDatos(tabla, items);
   dialogo.close();
   dibujar();
   mostrarAviso('aviso-catalogo', 'Guardado correctamente.');
