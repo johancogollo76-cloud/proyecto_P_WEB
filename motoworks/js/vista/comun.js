@@ -1,34 +1,26 @@
 /* ==========================================================
-   comun.js · Código compartido por TODAS las páginas
+   VISTA · comun.js · Lo que se ve, compartido por TODAS las páginas
    ----------------------------------------------------------
-   1. Utilidades
+   La vista solo DIBUJA y LEE la pantalla. No guarda datos ni
+   decide reglas: eso lo hacen el modelo y el controlador.
+
+   1. Utilidades de pantalla
    2. Iconos
    3. Menú lateral (se dibuja aquí para no repetirlo en cada HTML)
    4. Diálogos (ventanas emergentes)
    5. Validación de formularios
    6. Confirmar eliminación
+   7. VistaComun: lo que los controladores pueden usar
    ========================================================== */
 
-/* 1. UTILIDADES ------------------------------------------- */
+/* 1. UTILIDADES DE PANTALLA ------------------------------- */
 const $  = (selector, contexto = document) => contexto.querySelector(selector);
 const $$ = (selector, contexto = document) => [...contexto.querySelectorAll(selector)];
 
 // Convierte texto en HTML seguro (evita que lo escrito en un formulario se ejecute como código)
 const esc = texto => String(texto).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-// $7,4 M  (para los contadores del dashboard)
-const dineroCorto = n => n >= 1000000 ? '$' + (n / 1000000).toFixed(1).replace('.', ',') + ' M' : dinero(n);
-const dinero = n => '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
 // Escribe un texto dentro del elemento con ese id
 const poner = (id, texto) => { $('#' + id).textContent = texto; };
-
-// Buscador: ¿alguno de los textos contiene lo que se escribió? (sin importar mayúsculas)
-const coincideConBusqueda = (textoBuscado, ...textos) =>
-  textos.join(' ').toLowerCase().includes(textoBuscado.trim().toLowerCase());
-
-// Fecha y hora de este momento, con el formato de la app: "15 oct 2026" y "10:42 a. m."
-const fechaDeHoy = () => new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
-const horaActual = () => new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 
 // Aviso verde de "guardado": la página anterior lo pide con ?aviso=algo en la dirección
 function avisoPendiente() {
@@ -114,7 +106,12 @@ function activarDialogos() {
 /* 5. VALIDACIÓN DE FORMULARIOS -------------------------------
    Las reglas (required, pattern, min, type="email"...) se escriben en
    el HTML; aquí solo se traducen a mensajes que aparecen en la página.
-   Uso:  activarValidacion(formulario, funcionQueGuarda)             */
+   Uso:  activarValidacion(formulario, funcionQueGuarda, reglasExtra)
+
+   reglasExtra (opcional) son reglas que no se pueden escribir en el HTML,
+   como "este nombre ya existe". Las da el controlador así:
+     { '#sku': valor => (yaExiste(valor) ? 'Ese SKU ya existe.' : '') }
+   Cada regla devuelve un texto de error, o '' si el valor está bien.   */
 function mensajeError(campo) {
   const v = campo.validity;
   if (v.valid) return '';
@@ -143,12 +140,18 @@ function marcarCampo(campo, mensaje) {
   caja.append(aviso);
 }
 
-function activarValidacion(form, alValidar) {
+function activarValidacion(form, alValidar, reglasExtra = {}) {
   const campos = $$('input:not([type=file]), select, textarea', form);
   const resumen = $('.resumen-errores', form);
 
+  const aplicarReglasExtra = () => Object.entries(reglasExtra).forEach(([selector, regla]) => {
+    const campo = $(selector, form);
+    campo.setCustomValidity(regla(campo.value));
+  });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
+    aplicarReglasExtra();
     let errores = 0;
     campos.forEach(campo => {
       const mensaje = mensajeError(campo);
@@ -169,7 +172,8 @@ function activarValidacion(form, alValidar) {
 
   // Al corregir un campo marcado, el error se actualiza al instante
   campos.forEach(campo => campo.addEventListener('input', () => {
-    if (campo.hasAttribute('aria-invalid')) marcarCampo(campo, mensajeError(campo));
+    aplicarReglasExtra();
+    campos.filter(otro => otro.hasAttribute('aria-invalid')).forEach(otro => marcarCampo(otro, mensajeError(otro)));
   }));
 
   form.addEventListener('reset', () => {
@@ -182,6 +186,7 @@ function activarValidacion(form, alValidar) {
    Todas las páginas con botón "Eliminar" usan esta función: abre el
    diálogo "¿Eliminar?" y SOLO si la persona confirma ejecuta lo que
    se le pase.
+   El controlador dice QUÉ hacer si se confirma; la vista solo pregunta.
    Uso:  confirmarEliminacion(producto.nombre, () => { ...eliminar... }) */
 let accionConfirmada = null;
 
@@ -190,6 +195,13 @@ function confirmarEliminacion(nombre, alConfirmar) {
   $('#nombre-eliminar').textContent = nombre;
   $('#dlg-eliminar').showModal();
 }
+
+/* 7. VISTACOMUN ----------------------------------------------
+   Lo que los controladores pueden pedirle a la vista en cualquier página. */
+const leerParametro = nombre => new URLSearchParams(location.search).get(nombre);   // ?id=p1 → leerParametro('id')
+const irA = pagina => { location.href = pagina; };
+
+const VistaComun = { mostrarAviso, avisoPendiente, confirmarEliminacion, activarValidacion, leerParametro, irA };
 
 /* INICIO ---------------------------------------------------- */
 dibujarMenu();

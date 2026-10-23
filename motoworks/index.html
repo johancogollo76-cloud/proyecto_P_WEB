@@ -9,10 +9,13 @@
     href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&display=swap">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/vistas.css">
-  <script src="js/comun.js" defer></script>
-  <script src="js/almacenamiento.js" defer></script>
-  <script src="js/datos.js" defer></script>
-  <script src="js/inicio.js" defer></script>
+  <!-- Orden de carga: utilidades → MODELO → VISTA → CONTROLADOR -->
+  <script src="js/utilidades.js" defer></script>
+  <script src="js/modelo/almacenamiento.js" defer></script>
+  <script src="js/modelo/datos.js" defer></script>
+  <script src="js/vista/comun.js" defer></script>
+  <script src="js/vista/inicio.js" defer></script>
+  <script src="js/controlador/inicio.js" defer></script>
 </head>
 
 <body data-seccion="inicio">

@@ -1,9 +1,9 @@
 /* ==========================================================
-   datos.js · Los datos y sus reglas (CRUD)
+   MODELO · datos.js · Los datos y sus reglas (CRUD)
    ----------------------------------------------------------
    Crear, leer, editar y eliminar registros, más las reglas del
-   negocio (stock, nombres repetidos...). Para guardar usa
-   almacenamiento.js y NO toca la pantalla.
+   negocio (stock, nombres repetidos, totales...). Para guardar usa
+   almacenamiento.js. NO toca la pantalla: no sabe que existe el HTML.
 
    Las listas ("tablas") son: productos, categorias, marcas,
    proveedores, usuarios y ventas. Empiezan vacías.
@@ -43,6 +43,21 @@ function alternarEstado(tabla, id, [estadoUno, estadoDos] = ['Activo', 'Inactivo
   actualizarRegistro(tabla, id, { estado: registro.estado === estadoUno ? estadoDos : estadoUno });
 }
 
+/* Búsquedas ------------------------------------------------- */
+
+// Registros de una lista que contienen el texto buscado en alguno de esos campos
+function buscarPorTexto(tabla, texto, campos) {
+  return leerLista(tabla).filter(registro =>
+    coincideConBusqueda(texto, ...campos.map(campo => registro[campo] ?? '')));
+}
+
+// Productos que cumplen la búsqueda y los filtros de categoría y estado
+function filtrarProductos({ texto, categoria, estado }) {
+  return buscarPorTexto('productos', texto, ['nombre', 'sku', 'marca']).filter(producto =>
+    (!categoria || producto.categoria === categoria) &&
+    (!estado || producto.estado === estado));
+}
+
 /* Reglas ---------------------------------------------------- */
 
 // ¿Ya existe un registro con ese valor? (ignora mayúsculas y el registro que se está editando)
@@ -64,11 +79,15 @@ function renombrarEnProductos(campo, nombreViejo, nombreNuevo) {
 }
 
 /* Ventas ---------------------------------------------------- */
-const totalVenta = venta => venta.items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
-const unidadesVenta = venta => venta.items.reduce((suma, item) => suma + item.cantidad, 0);
+const sumar = (lista, valorDe) => lista.reduce((suma, elemento) => suma + valorDe(elemento), 0);
+const totalVenta = venta => sumar(venta.items, item => item.precio * item.cantidad);
+const unidadesVenta = venta => sumar(venta.items, item => item.cantidad);
+
+// La venta con su total y sus unidades ya calculados (lista para mostrarse)
+const ventaConTotales = venta => ({ ...venta, total: totalVenta(venta), unidades: unidadesVenta(venta) });
 
 function siguienteFactura() {
-  const mayorNumero = leerLista('ventas').reduce((mayor, venta) => Math.max(mayor, Number(venta.factura.slice(4))), 0);
+  const mayorNumero = Math.max(0, ...leerLista('ventas').map(venta => Number(venta.factura.slice(4))));
   return 'FAC-' + String(mayorNumero + 1).padStart(7, '0');
 }
 
@@ -92,4 +111,25 @@ function anularVenta(id) {
     if (producto) actualizarRegistro('productos', producto.id, { stock: producto.stock + item.cantidad });
   });
   eliminarRegistro('ventas', id);
+}
+
+/* Resumen del dashboard -------------------------------------- */
+// Todos los contadores se calculan con los datos que hay guardados en este momento
+function calcularResumen() {
+  const productos = leerLista('productos');
+  const ventas = leerLista('ventas');
+  const activos = productos.filter(producto => producto.estado === 'Activo').length;
+  const ventasPagadas = ventas.filter(venta => venta.estado === 'Pagada');
+
+  return {
+    totalProductos: productos.length,
+    activos,
+    inactivos: productos.length - activos,
+    unidadesEnStock: sumar(productos, producto => producto.stock),
+    valorInventario: sumar(productos, producto => producto.costo * producto.stock),
+    totalVentas: ventas.length,
+    ingresos: sumar(ventasPagadas, totalVenta),            // solo cuentan las facturas pagadas
+    stockBajo: productos.filter(producto => producto.stock <= producto.minimo).slice(0, 3),
+    ventasRecientes: ventas.slice(0, 3).map(ventaConTotales)
+  };
 }

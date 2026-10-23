@@ -1,5 +1,5 @@
 /* ==========================================================
-   almacenamiento.js · Lo ÚNICO que habla con localStorage
+   MODELO · almacenamiento.js · Lo ÚNICO que habla con localStorage
    ----------------------------------------------------------
    Solo guarda y lee listas. No sabe qué es un producto ni qué
    se ve en pantalla. localStorage conserva los datos aunque se
